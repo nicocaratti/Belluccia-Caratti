@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Diseño — Cúspides</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles2.css">
+    <style>
+        /* ── UI KIT — estilos propios ─────────────────────────────── */
+        :root {
+            --uk-border: rgba(56,189,248,0.12);
+            --uk-bg: rgba(10,18,28,0.7);
+        }
+
+        /* NAV */
+        .uk-nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(5,10,15,0.92);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--uk-border);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 5%; height: 58px;
+        }
+        .uk-nav__logo {
+            font-family: var(--font-display); font-size: 0.9rem; font-weight: 900;
+            letter-spacing: 0.08em; color: var(--neon); text-decoration: none;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .uk-nav__logo svg { width: 22px; height: 16px; color: var(--sky); }
+        .uk-nav__links {
+            display: flex; gap: 2rem; list-style: none;
+        }
+        .uk-nav__links a {
+            font-family: var(--font-mono); font-size: 0.62rem;
+            letter-spacing: 0.14em; text-transform: uppercase;
+            color: var(--muted); text-decoration: none;
+            transition: color 0.2s;
+        }
+        .uk-nav__links a:hover { color: var(--neon); }
+        .uk-nav__back {
+            font-family: var(--font-mono); font-size: 0.62rem;
+            letter-spacing: 0.1em; text-transform: uppercase;
+            color: var(--neon); text-decoration: none;
+            border: 1px solid rgba(241,245,249,0.2);
+            border-radius: 6px; padding: 0.4rem 0.9rem;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .uk-nav__back:hover { border-color: var(--sky); color: var(--sky); }
+
+        /* HERO */
+        .uk-hero {
+            padding: 14rem 5% 8rem;
+            text-align: center; max-width: 800px; margin: 0 auto;
+        }
+        .uk-hero__eyebrow {
+            font-family: var(--font-mono); font-size: 0.65rem;
+            letter-spacing: 0.22em; text-transform: uppercase;
+            color: var(--sky); margin-bottom: 1.2rem;
+            display: inline-block;
+            border: 1px solid rgba(56,189,248,0.25);
+            border-radius: 20px; padding: 0.35rem 1rem;
+        }
+        .uk-hero__title {
+            font-family: var(--font-display); font-weight: 900;
+            font-size: clamp(3rem, 7vw, 5.5rem); line-height: 1.0;
+            color: var(--neon); text-transform: uppercase;
+            letter-spacing: -0.02em; margin-bottom: 1.2rem;
+        }
+        .uk-hero__title em { color: var(--sky); font-style: normal; }
+        .uk-hero__sub {
+            font-size: 1rem; color: var(--muted); line-height: 1.65;
+            max-width: 480px; margin: 0 auto 3rem;
+        }
+        .uk-hero__arrow {
+            display: flex; justify-content: center;
+            color: var(--sky); opacity: 0.5; animation: uk-bounce 2s ease-in-out infinite;
+        }
+        @keyframes uk-bounce {
+            0%,100% { transform: translateY(0); }
+            50% { transform: translateY(6px); }
+        }
+
+        /* LAYOUT BASE de cada sección */
+        .uk-section {
+            max-width: 1280px; margin: 0 auto;
+            padding: 5rem 5%;
+            display: grid; grid-template-columns: 220px 1fr;
+            gap: 4rem; align-items: start;
+            border-top: 1px solid var(--uk-border);
+        }
+        .uk-section__meta { padding-top: 0.3rem; }
+        .uk-section__num {
+            font-family: var(--font-mono); font-size: 0.75rem;
+            letter-spacing: 0.16em; color: var(--sky);
+            font-weight: 700; display: block; margin-bottom: 0.5rem;
+        }
+        .uk-section__name {
+            font-family: var(--font-display); font-size: 1.25rem;
+            font-weight: 900; text-transform: uppercase; color: var(--neon);
+            letter-spacing: 0.02em; line-height: 1.1; margin-bottom: 0.6rem;
+        }
+        .uk-section__desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+        /* DEMO CARD — contenedor del lado derecho */
+        .uk-demo {
+            background: var(--uk-bg);
+            border: 1px solid var(--uk-border);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            backdrop-filter: blur(8px);
+        }
+        .uk-demo--grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .uk-demo--flex { display: flex; flex-wrap: wrap; gap: 1.2rem; align-items: flex-start; }
+
+        /* ── 01 COLORES ─────────────────────────────────────────── */
+        .uk-swatch-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; }
+        .uk-swatch { border-radius: 12px; overflow: hidden; border: 1px solid var(--uk-border); }
+        .uk-swatch__color { height: 72px; width: 100%; }
+        .uk-swatch__info { padding: 0.8rem; background: rgba(5,10,15,0.6); }
+        .uk-swatch__name {
+            font-family: var(--font-mono); font-size: 0.62rem;
+            letter-spacing: 0.14em; text-transform: uppercase;
+            color: var(--sky); display: block; margin-bottom: 0.3rem;
+        }
+        .uk-swatch__hex {
+            font-family: var(--font-mono); font-size: 0.78rem;
+            font-weight: 700; color: var(--neon); display: block;
+        }
+        .uk-swatch__use { font-size: 0.7rem; color: var(--muted); margin-top: 0.2rem; display: block; }
+
+        /* ── 02 TIPOGRAFÍA ──────────────────────────────────────── */
+        .uk-type-block { display: flex; flex-direction: column; gap: 0.6rem; }
+        .uk-type__sample {
+            font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1;
+            color: var(--neon); margin: 0.3rem 0;
+        }
+        .uk-type__sample--display { font-family: var(--font-display); font-weight: 900; }
+        .uk-type__sample--body { font-family: var(--font-body, 'Outfit', sans-serif); font-weight: 400; font-size: 2rem; }
+        .uk-type__sample--mono { font-family: var(--font-mono); font-weight: 700; font-size: 2rem; }
+        .uk-type__name {
+            font-family: var(--font-mono); font-size: 0.68rem;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--sky); font-weight: 700;
+        }
+        .uk-type__use { font-size: 0.78rem; color: var(--muted); }
+        .uk-type__alpha {
+            font-size: 0.68rem; letter-spacing: 0.06em; color: var(--muted); opacity: 0.6;
+            border-top: 1px solid var(--uk-border); padding-top: 0.6rem; margin-top: 0.3rem;
+        }
+        .uk-type-block + .uk-type-block { border-top: 1px solid var(--uk-border); padding-top: 1.4rem; }
+
+        /* ── 03 BOTONES ─────────────────────────────────────────── */
+        .uk-btn-row { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+        .uk-btn-label { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 0.5rem; }
+
+        /* ── 04 CARDS ───────────────────────────────────────────── */
+        .uk-cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start; }
+        .uk-card-label { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sky); margin-bottom: 0.8rem; display: block; }
+
+        /* mini proto-card sin perspective full */
+        .uk-proto-mini {
+            perspective: 800px; height: 160px; cursor: pointer;
+            background: transparent; border: none; padding: 0;
+        }
+        .uk-proto-mini .proto-card__inner {
+            transition: transform 0.55s cubic-bezier(0.4,0,0.2,1);
+            transform-style: preserve-3d;
+            position: relative; width: 100%; height: 100%;
+        }
+        .uk-proto-mini:hover .proto-card__inner { transform: rotateY(180deg); }
+        .uk-proto-mini .proto-card__front,
+        .uk-proto-mini .proto-card__back {
+            position: absolute; inset: 0;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-sm);
+        }
+        .uk-proto-mini .proto-card__front {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 0.7rem; padding: 1.2rem; text-align: center;
+        }
+        .uk-proto-mini .proto-card__back {
+            transform: rotateY(180deg);
+            background: #0a1621; border-color: var(--sky);
+            display: flex; flex-direction: column;
+            justify-content: center; gap: 0.6rem; padding: 1.4rem;
+        }
+
+        /* review mini */
+        .uk-review-mini {
+            background: var(--panel); border: 1px solid var(--line);
+            border-radius: var(--radius); padding: 1.4rem 1.6rem;
+            display: flex; flex-direction: column; gap: 0.8rem;
+        }
+        .uk-review-mini__stars { color: var(--sky); font-size: 0.65rem; letter-spacing: 3px; }
+        .uk-review-mini__text { font-size: 0.82rem; line-height: 1.65; color: var(--neon); font-style: italic; }
+        .uk-review-mini__footer { border-top: 1px solid var(--line); padding-top: 0.7rem; display: flex; flex-direction: column; gap: 0.15rem; }
+        .uk-review-mini__name { font-size: 0.75rem; font-weight: 700; color: var(--neon); }
+        .uk-review-mini__tag { font-family: var(--font-mono); font-size: 0.6rem; color: var(--sky); letter-spacing: 0.08em; text-transform: uppercase; }
+
+        /* ── 05 ICONOS ──────────────────────────────────────────── */
+        .uk-icon-grid { display: flex; flex-wrap: wrap; gap: 1rem; }
+        .uk-icon-item {
+            display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+            width: 72px;
+        }
+        .uk-icon-wrap {
+            width: 48px; height: 48px; border-radius: 12px;
+            background: rgba(56,189,248,0.07);
+            border: 1px solid rgba(56,189,248,0.18);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--sky); transition: background 0.2s, border-color 0.2s;
+        }
+        .uk-icon-wrap:hover { background: rgba(56,189,248,0.14); border-color: rgba(56,189,248,0.4); }
+        .uk-icon-wrap svg { width: 20px; height: 20px; }
+        .uk-icon-name { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-align: center; line-height: 1.3; }
+
+        /* ── 06 COMPONENTES UI ──────────────────────────────────── */
+        .uk-comp-col { display: flex; flex-direction: column; gap: 1.2rem; }
+        .uk-eyebrow-demo { display: flex; flex-direction: column; gap: 0.5rem; }
+        .uk-badge {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            font-family: var(--font-mono); font-size: 0.6rem;
+            letter-spacing: 0.1em; text-transform: uppercase;
+            padding: 0.3rem 0.75rem; border-radius: 20px;
+            border: 1px solid; font-weight: 700;
+        }
+        .uk-badge--sky { color: var(--sky); border-color: rgba(56,189,248,0.35); background: rgba(56,189,248,0.08); }
+        .uk-badge--vivid { color: var(--vivid); border-color: rgba(232,96,58,0.35); background: rgba(232,96,58,0.08); }
+        .uk-badge--neon { color: var(--neon); border-color: rgba(241,245,249,0.2); background: rgba(241,245,249,0.04); }
+        .uk-stat-demo { display: flex; flex-direction: column; gap: 0.2rem; }
+        .uk-stat-demo__num { font-family: var(--font-display); font-size: 2.2rem; font-weight: 900; color: var(--neon); letter-spacing: -0.03em; line-height: 1; }
+        .uk-stat-demo__label { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+        .uk-divider { height: 1px; background: var(--line); margin: 0.2rem 0; }
+
+        /* accordion demo */
+        .uk-acc-demo {
+            background: var(--panel); border: 1px solid var(--line);
+            border-radius: var(--radius); overflow: hidden;
+        }
+        .uk-acc-demo details { border-bottom: 1px solid var(--line); }
+        .uk-acc-demo details:last-child { border-bottom: none; }
+        .uk-acc-demo summary {
+            display: flex; align-items: center; gap: 1rem;
+            padding: 1rem 1.2rem; cursor: pointer; list-style: none;
+            font-size: 0.88rem; color: var(--neon); user-select: none;
+        }
+        .uk-acc-demo summary::-webkit-details-marker { display: none; }
+        .uk-acc-demo summary span { font-family: var(--font-mono); font-size: 0.65rem; color: var(--sky); letter-spacing: 0.12em; font-weight: 700; }
+        .uk-acc-demo summary .uk-acc-btn { margin-left: auto; color: var(--sky); font-size: 1.1rem; transition: transform 0.25s; }
+        .uk-acc-demo details[open] .uk-acc-btn { transform: rotate(45deg); }
+        .uk-acc-body { padding: 0 1.2rem 1rem calc(1.2rem + 42px); font-size: 0.82rem; color: var(--muted); line-height: 1.7; }
+
+        /* ── 07 MOTION ──────────────────────────────────────────── */
+        .uk-motion-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+        .uk-motion-cell {
+            display: flex; flex-direction: column; align-items: center;
+            gap: 1.2rem; padding: 1.8rem 1.2rem;
+            background: rgba(5,10,15,0.5); border: 1px solid var(--uk-border);
+            border-radius: var(--radius-sm, 12px); text-align: center;
+        }
+        .uk-motion-title { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+
+        /* Hover lift demo */
+        .uk-hover-lift {
+            background: var(--panel); border: 1px solid var(--line);
+            border-radius: var(--radius-sm, 12px); padding: 0.8rem 1.2rem;
+            font-size: 0.78rem; color: var(--neon); cursor: pointer;
+            transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+        }
+        .uk-hover-lift:hover { transform: translateY(-4px); border-color: rgba(56,189,248,0.35); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+
+        /* Kit pulse demo */
+        .uk-pulse-demo {
+            position: relative; width: 48px; height: 48px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .uk-pulse-demo__ring {
+            position: absolute; inset: 0; border-radius: 50%;
+            border: 1.5px solid rgba(56,189,248,0.6);
+            background: rgba(56,189,248,0.1);
+            animation: kit-pulse 2.4s ease-in-out infinite;
+        }
+        .uk-pulse-demo__dot {
+            width: 30px; height: 30px; border-radius: 50%;
+            background: var(--sky); display: flex; align-items: center;
+            justify-content: center; color: #050a0f; font-weight: 700;
+            font-size: 1.1rem; position: relative; z-index: 1;
+        }
+
+        /* Progress bar */
+        .uk-progress { width: 100%; }
+        .uk-progress__label { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; display: block; }
+        .uk-progress__bar { height: 4px; background: var(--line); border-radius: 2px; overflow: hidden; }
+        .uk-progress__fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--sky), #7dd3fc); transition: width 1s ease; }
+
+        /* ── 08 ESPACIADO ───────────────────────────────────────── */
+        .uk-spacing-hero { text-align: center; margin-bottom: 2rem; }
+        .uk-spacing-base { font-family: var(--font-display); font-size: 4rem; font-weight: 900; color: var(--sky); line-height: 1; }
+        .uk-spacing-label { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-top: 0.3rem; }
+        .uk-spacing-scale { display: flex; gap: 0.8rem; align-items: flex-end; justify-content: center; flex-wrap: wrap; }
+        .uk-spacing-unit { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+        .uk-spacing-block { background: rgba(56,189,248,0.25); border: 1px solid rgba(56,189,248,0.4); border-radius: 3px; width: 20px; }
+        .uk-spacing-val { font-family: var(--font-mono); font-size: 0.6rem; color: var(--sky); }
+
+        /* ── 09 FORMA (radios) ──────────────────────────────────── */
+        .uk-radius-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+        .uk-radius-card {
+            background: rgba(56,189,248,0.08);
+            border: 1px solid rgba(56,189,248,0.25);
+            height: 80px;
+            display: flex; align-items: flex-end;
+            padding: 0.8rem;
+        }
+        .uk-radius-info { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.1em; }
+        .uk-radius-val { display: block; font-size: 0.82rem; font-weight: 700; color: var(--neon); }
+        .uk-radius-name { display: block; font-size: 0.58rem; color: var(--muted); margin-top: 0.15rem; text-transform: uppercase; letter-spacing: 0.1em; }
+
+        /* FOOTER UK */
+        .uk-footer {
+            border-top: 1px solid var(--uk-border);
+            padding: 3rem 5%; margin-top: 4rem;
+            text-align: center;
+        }
+        .uk-footer__text { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+        .uk-footer__text em { color: var(--sky); font-style: normal; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .uk-section { grid-template-columns: 1fr; gap: 2rem; }
+            .uk-swatch-row { grid-template-columns: repeat(2, 1fr); }
+            .uk-motion-row { grid-template-columns: 1fr; }
+            .uk-radius-row { grid-template-columns: repeat(2, 1fr); }
+            .uk-nav__links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="uk-nav">
+    <a href="index.html" class="uk-nav__logo">
+        <svg viewBox="0 0 28 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="0,18 8,4 14,12 19,2 28,18" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+        </svg>
+        CÚSPIDES
+    </a>
+    <ul class="uk-nav__links">
+        <li><a href="#colores">Colores</a></li>
+        <li><a href="#tipografia">Tipografía</a></li>
+        <li><a href="#botones">Botones</a></li>
+        <li><a href="#cards">Cards</a></li>
+        <li><a href="#componentes">Componentes</a></li>
+        <li><a href="#motion">Motion</a></li>
+        <li><a href="#forma">Forma</a></li>
+    </ul>
+    <a href="index.html" class="uk-nav__back">Volver al sitio →</a>
+</nav>
+
+<!-- HERO -->
+<div class="uk-hero">
+    <span class="uk-hero__eyebrow">Biblioteca UI</span>
+    <h1 class="uk-hero__title">Sistema<br>de <em>Diseño</em></h1>
+    <p class="uk-hero__sub">Componentes, tokens y decisiones visuales que dan identidad a Cúspides.</p>
+    <div class="uk-hero__arrow">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6,9 12,15 18,9"/>
+        </svg>
+    </div>
+</div>
+
+<!-- ── 01 COLORES ──────────────────────────────────────────────── -->
+<section class="uk-section" id="colores">
+    <div class="uk-section__meta">
+        <span class="uk-section__num">01</span>
+        <p class="uk-section__name">Colores</p>
+        <p class="uk-section__desc">Paleta de tokens del sistema.</p>
+    </div>
+    <div class="uk-demo">
+        <div class="uk-swatch-row">
+            <div class="uk-swatch">
+                <div class="uk-swatch__color" style="background:#38bdf8;"></div>
+                <div class="uk-swatch__info">
+                    <span class="uk-swatch__name">Sky</span>
+                    <span class="uk-swatch__hex">#38bdf8</span>
+                    <span class="uk-swatch__use">Acciones · highlights</span>
+                </div>
+            </div>
+            <div class="uk-swatch">
+                <div class="uk-swatch__color" style="background:#050a0f;border-bottom:1px solid rgba(56,189,248,0.15);"></div>
+                <div class="uk-swatch__info">
+                    <span class="uk-swatch__name">Void</span>
+                    <span class="uk-swatch__hex">#050a0f</span>
+                    <span class="uk-swatch__use">Fondo principal</span>
+                </div>
+            </div>
+            <div class="uk-swatch">
+                <div class="uk-swatch__color" style="background:#0f171e;"></div>
+                <div class="uk-swatch__info">
+                    <span class="uk-swatch__name">Panel</span>
+                    <span class="uk-swatch__hex">#0f171e</span>
+                    <span class="uk-swatch__use">Cards · módulos</span>
+                </div>
+            </div>
+            <div class="uk-swatch">
+                <div class="uk-swatch__color" style="background:#f1f5f9;"></div>
+                <div class="uk-swatch__info">
+                    <span class="uk-swatch__name">Neon</span>
+                    <span class="uk-swatch__hex">#f1f5f9</span>
+                    <span class="uk-swatch__use">Texto principal</span>
+                </div>
+            </div>
+            <div class="uk-swatch">
+                <div class="uk-swatch__color" style="background:#94a3b8;"></div>
+                <div class="uk-swatch__info">
+                    <span class="uk-swatch__name">Muted</span>
+                    <span class="uk-swatch__hex">#94a3b8</span>
+                    <span class="uk-swatch__use">Texto secundario</span>
+                </div>
+            </div>
+            <div class="uk-swatch">
+                <div class="uk-swatch__color" style="background:#1e293b;"></div>
+                <div class="uk-swatch__info">
+                    <span class="uk-swatch__name">Line</span>
+                    <span class="uk-swatch__hex">#1e293b</span>
+                    <span class="uk-swatch__use">Bordes · divisores</span>
+                </div>
+            </div>
+            <div class="uk-swatch">
+                <div class="uk-swatch__color" style="background:#e8603a;"></div>
+                <div class="uk-swatch__info">
+                    <span class="uk-swatch__name">Vivid</span>
+                    <span class="uk-swatch__hex">#e8603a</span>
+                    <span class="uk-swatch__use">Acento secundario</span>
+                </div>
+            </div>
+            <div class="uk-swatch">
+                <div class="uk-swatch__color" style="background:linear-gradient(180deg,#050a0f,#091c34 50%,#050a0f);"></div>
+                <div class="uk-swatch__info">
+                    <span class="uk-swatch__name">Gradiente</span>
+                    <span class="uk-swatch__hex">Body BG</span>
+                    <span class="uk-swatch__use">Fondo continuo</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── 02 TIPOGRAFÍA ───────────────────────────────────────────── -->
+<section class="uk-section" id="tipografia">
+    <div class="uk-section__meta">
+        <span class="uk-section__num">02</span>
+        <p class="uk-section__name">Tipografía</p>
+        <p class="uk-section__desc">Jerarquía visual en tres familias.</p>
+    </div>
+    <div class="uk-demo">
+        <div class="uk-type-block">
+            <span class="uk-type__name">Syne</span>
+            <p class="uk-type__sample uk-type__sample--display">Aa</p>
+            <p class="uk-type__use">Títulos, números de impacto y display. Pesos 700–900.</p>
+            <p class="uk-type__alpha">ABCDEFGHIJKLMNOPQRSTUVWXYZ · 0123456789</p>
+        </div>
+        <div class="uk-type-block">
+            <span class="uk-type__name">Outfit</span>
+            <p class="uk-type__sample uk-type__sample--body">Aa</p>
+            <p class="uk-type__use">Cuerpo de texto, párrafos, subtítulos. Pesos 300–600.</p>
+            <p class="uk-type__alpha">abcdefghijklmnopqrstuvwxyz · 0123456789</p>
+        </div>
+        <div class="uk-type-block">
+            <span class="uk-type__name">Space Mono</span>
+            <p class="uk-type__sample uk-type__sample--mono">Aa</p>
+            <p class="uk-type__use">Eyebrows, códigos, coordenadas, labels técnicos.</p>
+            <p class="uk-type__alpha">ABCDEFGHIJKLMNOPQRSTUVWXYZ · 01·02·03</p>
+        </div>
+    </div>
+</section>
+
+<!-- ── 03 BOTONES ─────────────────────────────────────────────── -->
+<section class="uk-section" id="botones">
+    <div class="uk-section__meta">
+        <span class="uk-section__num">03</span>
+        <p class="uk-section__name">Botones</p>
+        <p class="uk-section__desc">Acciones reales del sitio.</p>
+    </div>
+    <div class="uk-demo">
+        <div style="display:flex; flex-direction:column; gap:1.5rem;">
+            <div>
+                <p class="uk-btn-label">Primario — btn--primary</p>
+                <div class="uk-btn-row">
+                    <a href="#" class="btn btn--primary">Participar en la expedición →</a>
+                </div>
+            </div>
+            <div class="uk-divider"></div>
+            <div>
+                <p class="uk-btn-label">Secundario — btn--ghost</p>
+                <div class="uk-btn-row">
+                    <a href="#" class="btn btn--ghost">Ver expediciones</a>
+                </div>
+            </div>
+            <div class="uk-divider"></div>
+            <div>
+                <p class="uk-btn-label">Back link — font-mono</p>
+                <div class="uk-btn-row">
+                    <a href="#" style="font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;">← Volver a expediciones</a>
+                </div>
+            </div>
+            <div class="uk-divider"></div>
+            <div>
+                <p class="uk-btn-label">Accordion trigger — kit-dot</p>
+                <div class="uk-btn-row" style="align-items:center; gap:1.5rem;">
+                    <div class="uk-pulse-demo">
+                        <span class="uk-pulse-demo__ring"></span>
+                        <span class="uk-pulse-demo__dot">+</span>
+                    </div>
+                    <span style="font-size:0.78rem; color:var(--muted);">Hotspot interactivo · pulse + tooltip</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── 04 CARDS ───────────────────────────────────────────────── -->
+<section class="uk-section" id="cards">
+    <div class="uk-section__meta">
+        <span class="uk-section__num">04</span>
+        <p class="uk-section__name">Cards</p>
+        <p class="uk-section__desc">Tarjetas reales del sistema. Hover para ver el reverso.</p>
+    </div>
+    <div class="uk-demo">
+        <div class="uk-cards-grid">
+
+            <!-- Proto-card flip -->
+            <div>
+                <span class="uk-card-label">Proto-card — flip 180°</span>
+                <article class="uk-proto-mini">
+                    <div class="proto-card__inner">
+                        <div class="proto-card__front">
+                            <div class="proto-icon-wrap">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="22" height="22">
+                                    <polyline points="2,20 8,7 12,12 16,5 22,20"/>
+                                    <line x1="2" y1="20" x2="22" y2="20"/>
+                                </svg>
+                            </div>
+                            <p class="proto-name">Requisito técnico</p>
+                            <span class="proto-card__num">01</span>
+                        </div>
+                        <div class="proto-card__back">
+                            <p class="proto-card__back-label">El estándar</p>
+                            <p class="proto-card__back-text">Escalada en roca grado V+, aseguramiento y rescate en grietas.</p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Review card -->
+            <div>
+                <span class="uk-card-label">Review-card — carrusel</span>
+                <div class="uk-review-mini">
+                    <p class="uk-review-mini__stars">★ ★ ★ ★ ★</p>
+                    <p class="uk-review-mini__text">"Una expedición que te pone a prueba de verdad. El equipo no improvisa nada."</p>
+                    <div class="uk-review-mini__footer">
+                        <p class="uk-review-mini__name">Martín Alvarez</p>
+                        <p class="uk-review-mini__tag">FZ·01 · Fitz Roy 2025</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accordion card -->
+            <div>
+                <span class="uk-card-label">Accordion card — itinerario</span>
+                <div class="uk-acc-demo">
+                    <details open>
+                        <summary>
+                            <span>F·01</span>
+                            Aproximación técnica
+                            <span class="uk-acc-btn">+</span>
+                        </summary>
+                        <div class="uk-acc-body">Trekking de aproximación con carga técnica y revisión de protocolos.</div>
+                    </details>
+                    <details>
+                        <summary>
+                            <span>F·02</span>
+                            Instalación de altura
+                            <span class="uk-acc-btn">+</span>
+                        </summary>
+                        <div class="uk-acc-body">Vivac y acopio en campamentos intermedios.</div>
+                    </details>
+                </div>
+            </div>
+
+            <!-- Stat item -->
+            <div>
+                <span class="uk-card-label">Stat-item — stats strip</span>
+                <div style="background:rgba(4,9,16,0.72);border:1px solid var(--line);border-radius:var(--radius);padding:1.4rem 1.8rem;display:flex;gap:2rem;align-items:center;">
+                    <div class="uk-stat-demo">
+                        <span class="uk-stat-demo__num">14</span>
+                        <span class="uk-stat-demo__label">Expediciones</span>
+                    </div>
+                    <div style="width:1px;height:36px;background:var(--line);flex-shrink:0;"></div>
+                    <div class="uk-stat-demo">
+                        <span class="uk-stat-demo__num">3.405m</span>
+                        <span class="uk-stat-demo__label">Altitud máx.</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ── 05 ICONOS ──────────────────────────────────────────────── -->
+<section class="uk-section" id="iconos">
+    <div class="uk-section__meta">
+        <span class="uk-section__num">05</span>
+        <p class="uk-section__name">Iconos</p>
+        <p class="uk-section__desc">Set funcional usado en el sitio. Trazo 1.5–1.6, sin relleno.</p>
+    </div>
+    <div class="uk-demo">
+        <div class="uk-icon-grid">
+            <div class="uk-icon-item">
+                <div class="uk-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="2,20 8,7 12,12 16,5 22,20"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
+                </div>
+                <span class="uk-icon-name">Montaña</span>
+            </div>
+            <div class="uk-icon-item">
+                <div class="uk-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="7" r="2.5"/><circle cx="17" cy="7" r="2.5"/><path d="M4,20 C4,16 7,14 9,14 L15,14 C17,14 20,16 20,20"/><line x1="13" y1="14" x2="13" y2="10"/></svg>
+                </div>
+                <span class="uk-icon-name">Equipo</span>
+            </div>
+            <div class="uk-icon-item">
+                <div class="uk-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6,2 L6,6 Q6,8 8,8 L16,8 Q18,8 18,6 L18,2"/><path d="M6,8 L5,22 L19,22 L18,8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
+                </div>
+                <span class="uk-icon-name">Mochila</span>
+            </div>
+            <div class="uk-icon-item">
+                <div class="uk-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+                </div>
+                <span class="uk-icon-name">Ubicación</span>
+            </div>
+            <div class="uk-icon-item">
+                <div class="uk-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+                </div>
+                <span class="uk-icon-name">Email</span>
+            </div>
+            <div class="uk-icon-item">
+                <div class="uk-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 3.07 4.18 2 2 0 0 1 5.06 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L9.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                </div>
+                <span class="uk-icon-name">Teléfono</span>
+            </div>
+            <div class="uk-icon-item">
+                <div class="uk-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+                </div>
+                <span class="uk-icon-name">Instagram</span>
+            </div>
+            <div class="uk-icon-item">
+                <div class="uk-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="0,18 8,4 14,12 19,2 28,18" transform="scale(0.85) translate(1,1)"/></svg>
+                </div>
+                <span class="uk-icon-name">Logo</span>
+            </div>
+            <div class="uk-icon-item">
+                <div class="uk-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="6,9 12,15 18,9"/></svg>
+                </div>
+                <span class="uk-icon-name">Chevron</span>
+            </div>
+            <div class="uk-icon-item">
+                <div class="uk-icon-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+                </div>
+                <span class="uk-icon-name">Arrow</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── 06 COMPONENTES UI ──────────────────────────────────────── -->
+<section class="uk-section" id="componentes">
+    <div class="uk-section__meta">
+        <span class="uk-section__num">06</span>
+        <p class="uk-section__name">Componentes</p>
+        <p class="uk-section__desc">Etiquetas, badges y elementos de UI reutilizables.</p>
+    </div>
+    <div class="uk-demo">
+        <div style="display:flex; flex-direction:column; gap:1.8rem;">
+
+            <!-- Eyebrow + title -->
+            <div>
+                <p class="uk-btn-label">Eyebrow + título de sección</p>
+                <div class="uk-eyebrow-demo">
+                    <p class="eyebrow">Método Cúspides</p>
+                    <h3 class="section__title" style="margin:0;">Itinerario de ascenso.</h3>
+                </div>
+            </div>
+            <div class="uk-divider"></div>
+
+            <!-- Badges -->
+            <div>
+                <p class="uk-btn-label">Badges</p>
+                <div style="display:flex; flex-wrap:wrap; gap:0.6rem;">
+                    <span class="uk-badge uk-badge--sky">AD+ / D</span>
+                    <span class="uk-badge uk-badge--sky">UIAGM</span>
+                    <span class="uk-badge uk-badge--vivid">Cupos limitados</span>
+                    <span class="uk-badge uk-badge--neon">5 Días</span>
+                    <span class="uk-badge uk-badge--sky">3.405 m</span>
+                </div>
+            </div>
+            <div class="uk-divider"></div>
+
+            <!-- Coordenadas decorativas -->
+            <div>
+                <p class="uk-btn-label">Coordenadas — Space Mono, overlay decorativo</p>
+                <div style="background:rgba(5,10,15,0.6);border:1px solid var(--line);border-radius:10px;padding:1rem 1.2rem;position:relative;overflow:hidden;height:56px;">
+                    <span style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(56,189,248,0.4);">49°16'S · 73°02'W · 3.405 m · FITZ ROY · PATAGONIA</span>
+                </div>
+            </div>
+            <div class="uk-divider"></div>
+
+            <!-- Member chip -->
+            <div>
+                <p class="uk-btn-label">Member chip — tarjeta de guía</p>
+                <div style="display:flex; gap:0.6rem; flex-wrap:wrap; align-items:center;">
+                    <span class="member__chip"><span class="member__chip-star">★</span> UIAGM</span>
+                    <span style="font-size:0.78rem;color:var(--muted);">Badge visible en el frente de la member-card</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ── 07 MOTION ──────────────────────────────────────────────── -->
+<section class="uk-section" id="motion">
+    <div class="uk-section__meta">
+        <span class="uk-section__num">07</span>
+        <p class="uk-section__name">Motion</p>
+        <p class="uk-section__desc">Animaciones reales del sistema.</p>
+    </div>
+    <div class="uk-demo">
+        <div class="uk-motion-row">
+            <div class="uk-motion-cell">
+                <p class="uk-motion-title">Hover lift</p>
+                <div class="uk-hover-lift">Posate aquí →</div>
+                <p style="font-size:0.72rem;color:var(--muted);">translateY(-4px) + shadow · 0.25s ease</p>
+            </div>
+            <div class="uk-motion-cell">
+                <p class="uk-motion-title">Pulso hotspot</p>
+                <div class="uk-pulse-demo">
+                    <span class="uk-pulse-demo__ring"></span>
+                    <span class="uk-pulse-demo__dot">+</span>
+                </div>
+                <p style="font-size:0.72rem;color:var(--muted);">scale + opacity · 2.4s infinite</p>
+            </div>
+            <div class="uk-motion-cell">
+                <p class="uk-motion-title">Progreso</p>
+                <div class="uk-progress">
+                    <span class="uk-progress__label">Cupos ocupados · 68%</span>
+                    <div class="uk-progress__bar">
+                        <div class="uk-progress__fill" style="width:68%;"></div>
+                    </div>
+                </div>
+                <p style="font-size:0.72rem;color:var(--muted);">linear-gradient sky · 1s ease</p>
+            </div>
+        </div>
+        <div style="margin-top:1.2rem;padding-top:1.2rem;border-top:1px solid var(--uk-border);">
+            <p class="uk-btn-label">Flip card 3D — hover para ver reverso</p>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;">
+                <article class="uk-proto-mini">
+                    <div class="proto-card__inner">
+                        <div class="proto-card__front">
+                            <div class="proto-icon-wrap">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="22" height="22"><polyline points="2,20 8,7 12,12 16,5 22,20"/></svg>
+                            </div>
+                            <p class="proto-name">Seguridad</p>
+                        </div>
+                        <div class="proto-card__back">
+                            <p class="proto-card__back-label">Reverso</p>
+                            <p class="proto-card__back-text">rotateY(180deg) · 0.55s cubic-bezier(0.4,0,0.2,1)</p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── 08 ESPACIADO ───────────────────────────────────────────── -->
+<section class="uk-section" id="espaciado">
+    <div class="uk-section__meta">
+        <span class="uk-section__num">08</span>
+        <p class="uk-section__name">Espaciado</p>
+        <p class="uk-section__desc">Módulo base del sistema.</p>
+    </div>
+    <div class="uk-demo">
+        <div class="uk-spacing-hero">
+            <p class="uk-spacing-base">8px</p>
+            <p class="uk-spacing-label">Módulo base · todas las medidas son múltiplos</p>
+        </div>
+        <div class="uk-spacing-scale">
+            <div class="uk-spacing-unit">
+                <div class="uk-spacing-block" style="height:16px;"></div>
+                <span class="uk-spacing-val">16</span>
+            </div>
+            <div class="uk-spacing-unit">
+                <div class="uk-spacing-block" style="height:24px;"></div>
+                <span class="uk-spacing-val">24</span>
+            </div>
+            <div class="uk-spacing-unit">
+                <div class="uk-spacing-block" style="height:32px;"></div>
+                <span class="uk-spacing-val">32</span>
+            </div>
+            <div class="uk-spacing-unit">
+                <div class="uk-spacing-block" style="height:48px;"></div>
+                <span class="uk-spacing-val">48</span>
+            </div>
+            <div class="uk-spacing-unit">
+                <div class="uk-spacing-block" style="height:64px;"></div>
+                <span class="uk-spacing-val">64</span>
+            </div>
+            <div class="uk-spacing-unit">
+                <div class="uk-spacing-block" style="height:80px;"></div>
+                <span class="uk-spacing-val">80</span>
+            </div>
+            <div class="uk-spacing-unit">
+                <div class="uk-spacing-block" style="height:96px;"></div>
+                <span class="uk-spacing-val">96</span>
+            </div>
+            <div class="uk-spacing-unit">
+                <div class="uk-spacing-block" style="height:112px;"></div>
+                <span class="uk-spacing-val">112</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── 09 FORMA ───────────────────────────────────────────────── -->
+<section class="uk-section" id="forma">
+    <div class="uk-section__meta">
+        <span class="uk-section__num">09</span>
+        <p class="uk-section__name">Forma</p>
+        <p class="uk-section__desc">Radios de borde usados en el sistema.</p>
+    </div>
+    <div class="uk-demo">
+        <div class="uk-radius-row">
+            <div class="uk-radius-card" style="border-radius:6px;">
+                <div class="uk-radius-info">
+                    <span class="uk-radius-val">6px</span>
+                    <span class="uk-radius-name">Micro · links · nav</span>
+                </div>
+            </div>
+            <div class="uk-radius-card" style="border-radius:12px;">
+                <div class="uk-radius-info">
+                    <span class="uk-radius-val">12px</span>
+                    <span class="uk-radius-name">Chips · badges</span>
+                </div>
+            </div>
+            <div class="uk-radius-card" style="border-radius:18px;">
+                <div class="uk-radius-info">
+                    <span class="uk-radius-val">18px</span>
+                    <span class="uk-radius-name">Cards · secciones</span>
+                </div>
+            </div>
+            <div class="uk-radius-card" style="border-radius:999px;">
+                <div class="uk-radius-info">
+                    <span class="uk-radius-val">999px</span>
+                    <span class="uk-radius-name">Pills · CTAs</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<div class="uk-footer">
+    <p class="uk-footer__text">⌒ Sistema de diseño <em>Cúspides</em> · Patagonia Argentina · 49°16'S · 73°02'W</p>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>

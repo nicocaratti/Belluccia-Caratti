@@ -1,0 +1,1052 @@
+/* ─── STYLES2.CSS ────────────────────────────────────────────── */
+
+/* ── 1. Nuevos tokens de color ──────────────────────────────── */
+:root {
+    --vivid: #e8603a;
+    --sky:   #38bdf8;
+}
+.hi { color: var(--vivid); font-style: normal; }
+
+/* ══ SISTEMA DE FONDOS ALPINOS ══════════════════════════════════
+   Fondo unificado: gradiente vertical suave (no bloques) +
+   trama de horizonte montañoso (perfiles de cresta irregulares,
+   no triángulos geométricos).
+   Las secciones son semi-transparentes → el gradiente fluye.
+═══════════════════════════════════════════════════════════════ */
+html, body {
+    background-color: #060e1c !important;
+    background-image:
+        /* Perfil de horizonte alpino — crestas irregulares, no triángulos */
+        url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='110'><polyline points='0,88 18,72 35,78 52,50 66,60 82,30 96,44 110,24 124,38 140,28 152,50 166,40 180,62 196,52 210,74 228,62 245,78 262,68 280,82 300,72 320,84' fill='none' stroke='%2338bdf8' stroke-width='0.8' stroke-linejoin='round' opacity='0.07'/><polyline points='0,96 22,86 44,90 64,76 80,82 98,65 114,72 132,60 148,68 162,58 178,72 195,64 212,80 230,72 248,84 268,76 288,88 320,92' fill='none' stroke='%2338bdf8' stroke-width='0.6' stroke-linejoin='round' opacity='0.04'/></svg>"),
+        /* Gradiente vertical continuo — el "alma" del color de la página */
+        linear-gradient(180deg,
+            #050a0f 0%,
+            #071526 22%,
+            #091c34 45%,
+            #07152a 62%,
+            #060f20 82%,
+            #050a0f 100%
+        ) !important;
+    background-size: 320px 110px, 100% 100% !important;
+    background-attachment: fixed, fixed !important;
+}
+
+/* ── Stats strip: base oscura levemente diferenciada ─────────── */
+
+/* ── 2. Tipografía global ───────────────────────────────────── */
+.section__title {
+    font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+    font-weight: 800; line-height: 1.1;
+    color: var(--neon); margin-bottom: 1rem;
+    text-transform: uppercase; letter-spacing: -0.01em;
+}
+.section__lead { font-size: 1rem; line-height: 1.65; color: var(--muted); max-width: none; }
+/* Eyebrow: más grande y celeste vibrante */
+.eyebrow {
+    font-size: 0.78rem; letter-spacing: 0.18em;
+    margin-bottom: 0.8rem; color: var(--sky);
+}
+.section__head { margin-bottom: 2.5rem; }
+
+/* ── 3. EXPERIENCE — dos módulos redondeados dentro de la grilla */
+.experience.section {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 6rem 5%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.8rem;
+    align-items: stretch;
+}
+/* Caja de texto con fondo contrastante + bordes redondeados */
+.experience__text-side {
+    background: rgba(16, 31, 41, 0.85);
+    backdrop-filter: blur(8px);
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    padding: 4rem 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+/* Módulo visual: video con bordes redondeados, sin efectos */
+.experience__visual-side {
+    border-radius: var(--radius);
+    overflow: hidden;
+    position: relative;
+    min-height: 440px;
+}
+.experience__visual-side video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 0;
+    filter: none;
+}
+.experience__sky-bleed { display: none; }
+
+/* ── 4. HERO — centrado, sin eyebrow ────────────────────────── */
+.hero {
+    justify-content: center; align-items: center;
+    padding-left: 5%; padding-right: 5%;
+    background: transparent !important;
+}
+.hero__content { text-align: center; max-width: 780px; }
+.hero__title { font-size: clamp(2.8rem, 6vw, 5rem); line-height: 1.0; }
+.hero__sub { font-size: 1.1rem; line-height: 1.65; max-width: 520px; margin: 0 auto 2.5rem; }
+.hero__actions { justify-content: center; }
+
+/* ── 4. STATS STRIP ─────────────────────────────────────────── */
+.stats-strip {
+    background: rgba(4, 9, 16, 0.72);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(56,189,248,0.08);
+    border-bottom: 1px solid rgba(56,189,248,0.08);
+    padding: 3.5rem 0;
+    display: flex; justify-content: center;
+}
+.stats-strip__inner {
+    display: flex; max-width: 1280px;
+    width: 100%; padding: 0 5%;
+}
+.stat-item {
+    flex: 1; text-align: center;
+    padding: 0 2rem;
+    border-right: 1px solid var(--line);
+}
+.stat-item:last-child { border-right: none; }
+.stat-item__num {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    font-weight: 900; color: var(--neon);
+    line-height: 1; letter-spacing: -0.03em; display: block;
+}
+.stat-item__label {
+    font-family: var(--font-mono);
+    font-size: 0.62rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--faint);
+    margin-top: 0.6rem; display: block;
+}
+
+/* ── 5. TEAM — full-bleed, grilla que ocupa bien el espacio ─── */
+.team {
+    padding: 6rem 0; max-width: none;
+    margin: 0; background: rgba(6, 13, 20, 0.85) !important;
+    backdrop-filter: blur(4px);
+}
+.team > * {
+    max-width: 1280px; margin-left: auto; margin-right: auto;
+    padding-left: 5%; padding-right: 5%;
+}
+/* 4 cols que se reparten el ancho total */
+.team__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.2rem; margin-top: 2.5rem; align-items: start;
+}
+
+/* ── MEMBER CARD — full-image flip ─── */
+.member-card {
+    background: transparent;
+    border: none;
+    border-radius: var(--radius);
+    overflow: visible;
+    perspective: 1000px;
+    height: 400px;
+    cursor: pointer;
+    transform: none !important;
+}
+.member-card__inner {
+    position: relative; width: 100%; height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: var(--radius);
+}
+.member-card:hover .member-card__inner { transform: rotateY(180deg); }
+
+.member-card__front,
+.member-card__back {
+    position: absolute; inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+.member-card__front {
+    background-size: cover;
+    background-position: center top;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.1rem;
+}
+.member-card__front::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(5,10,15,0.15) 0%,
+        rgba(5,10,15,0)    40%,
+        rgba(5,10,15,0.75) 75%,
+        rgba(5,10,15,0.92) 100%
+    );
+    border-radius: var(--radius);
+    pointer-events: none;
+}
+.member__chip {
+    position: relative; z-index: 2;
+    display: inline-flex; align-items: center; gap: 0.35rem; align-self: flex-start;
+    background: rgba(255,255,255,0.92);
+    color: #0a0f14;
+    font-family: var(--font-mono); font-size: 0.62rem;
+    font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 5px 10px; border-radius: 20px;
+}
+.member__chip-star { color: #e8603a; font-size: 0.7rem; }
+
+.member__front-info { position: relative; z-index: 2; }
+.member__name {
+    font-family: var(--font-display); font-size: 1rem;
+    font-weight: 800; color: #fff;
+    margin-bottom: 0.2rem; text-transform: uppercase;
+    letter-spacing: 0.02em; line-height: 1.2;
+}
+.member__role {
+    font-family: var(--font-mono); font-size: 0.62rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(255,255,255,0.72);
+}
+
+.member-card__back {
+    background: #0a1621;
+    border: 1px solid var(--sky);
+    transform: rotateY(180deg);
+    padding: 1.6rem 1.4rem;
+    display: flex; flex-direction: column; justify-content: center; gap: 1.4rem;
+}
+.member__back-quote {
+    font-size: 0.88rem; line-height: 1.6;
+    color: var(--neon); font-style: italic;
+    border-left: 2px solid var(--sky);
+    padding-left: 0.9rem;
+}
+.member__ficha { display: flex; flex-direction: column; gap: 0.55rem; }
+.member__ficha-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    border-bottom: 1px solid rgba(30,41,59,0.7);
+    padding-bottom: 0.45rem;
+    font-size: 0.76rem;
+}
+.member__ficha-row:last-child { border-bottom: none; padding-bottom: 0; }
+.member__ficha-row span { color: var(--faint); font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.member__ficha-row strong { color: var(--neon); font-weight: 600; }
+
+/* ── 6. PHOTO BREAK ─────────────────────────────────────────── */
+.photo-break {
+    width: 100%; height: 68vh; min-height: 380px;
+    overflow: hidden; position: relative;
+}
+.photo-break img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center 40%;
+    display: block; filter: brightness(0.72);
+}
+.photo-break__caption {
+    position: absolute; bottom: 1.8rem; left: 5%;
+    font-family: var(--font-mono); font-size: 0.65rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+}
+
+/* ── Fondo unificado desde Expediciones ─────────────────────── */
+/* Expediciones — leve velo oscuro, deja pasar el gradiente */
+.expeditions {
+    background: rgba(4, 10, 20, 0.55) !important;
+    position: relative;
+    overflow: hidden;
+}
+/* Silueta de cordillera al fondo */
+.expeditions::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0; height: 320px;
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320' preserveAspectRatio='none'><path d='M0,320 L0,240 L60,225 L110,235 L155,200 L185,215 L215,175 L235,190 L255,150 L272,165 L290,130 L305,148 L320,115 L338,135 L352,105 L368,125 L385,95 L400,118 L420,140 L445,160 L480,170 L520,158 L555,175 L590,155 L625,170 L660,145 L690,160 L720,138 L748,155 L772,132 L798,150 L825,128 L852,148 L880,160 L910,172 L945,160 L975,172 L1005,158 L1035,170 L1065,155 L1095,168 L1125,152 L1160,165 L1195,178 L1230,165 L1265,178 L1300,192 L1340,180 L1390,190 L1440,200 L1440,320 Z' fill='rgba(56,189,248,0.06)'/><path d='M0,320 L0,265 L80,250 L140,260 L195,230 L230,242 L265,210 L295,225 L325,198 L355,212 L385,185 L415,200 L445,215 L480,205 L520,218 L555,205 L590,220 L640,208 L680,222 L725,210 L770,222 L815,210 L860,222 L910,212 L955,224 L1000,212 L1045,225 L1090,215 L1135,228 L1185,218 L1230,230 L1280,220 L1330,232 L1390,222 L1440,232 L1440,320 Z' fill='rgba(56,189,248,0.035)'/></svg>");
+    background-size: 100% 100%;
+    pointer-events: none; z-index: 0;
+}
+/* Coordenadas reales del Fitz Roy — margen derecho */
+.expeditions::after {
+    content: "49°16'S · 73°02'W · 3.405 m";
+    position: absolute;
+    right: 0.5rem; top: 50%;
+    transform: translateY(-50%);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.25em;
+    color: rgba(56,189,248,0.15);
+    text-transform: uppercase; white-space: nowrap;
+    pointer-events: none; z-index: 0;
+}
+.expeditions > * { position: relative; z-index: 1; }
+
+/* ── 7. EXPEDICIONES — sombra + stroke celeste en hover ─────── */
+.exp-card {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.55);
+    border: 1px solid var(--line);
+    transition: box-shadow 0.35s ease, border-color 0.35s ease;
+}
+.exp-card:hover {
+    box-shadow: 0 0 0 2px var(--sky), 0 16px 48px rgba(0,0,0,0.7);
+    border-color: var(--sky);
+}
+
+.exp-level {
+    font-size: 0.64rem; padding: 5px 12px;
+    border-radius: 4px; border: none;
+    font-weight: 700; letter-spacing: 0.08em;
+}
+.exp-level--5 { background: #ef4444; color: #fff; }
+.exp-level--4 { background: #f97316; color: #fff; }
+.exp-level--3 { background: var(--vivid); color: #fff; }
+.exp-level--2 { background: #22c55e; color: #fff; }
+
+/* ── 8. SEGURIDAD — velo más denso, da peso a la sección técnica */
+.security {
+    padding: 7rem 0; max-width: none;
+    margin: 0;
+    background: rgba(2, 6, 12, 0.82) !important;
+    position: relative;
+    overflow: hidden;
+}
+/* Cresta de picos en borde superior */
+.security::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 200px;
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 200' preserveAspectRatio='none'><path d='M0,0 L0,80 L50,90 L90,75 L120,88 L155,60 L178,72 L200,45 L220,60 L242,35 L260,52 L278,28 L295,46 L312,22 L328,40 L345,18 L362,38 L378,55 L400,65 L430,78 L465,70 L495,82 L530,68 L560,80 L600,68 L635,80 L670,65 L700,78 L735,62 L765,76 L800,60 L835,74 L870,58 L905,72 L940,60 L975,72 L1010,58 L1045,70 L1085,58 L1120,70 L1160,58 L1200,70 L1245,60 L1290,72 L1335,62 L1385,72 L1440,65 L1440,0 Z' fill='rgba(56,189,248,0.05)'/><path d='M0,0 L0,100 L70,112 L120,100 L160,112 L200,88 L230,100 L265,78 L292,92 L318,68 L342,84 L366,60 L388,76 L410,92 L440,104 L475,94 L510,106 L548,94 L585,106 L625,94 L662,106 L700,92 L738,106 L778,92 L818,106 L858,92 L898,106 L940,94 L980,106 L1020,94 L1060,106 L1105,94 L1148,106 L1194,94 L1240,106 L1288,96 L1335,106 L1390,96 L1440,104 L1440,0 Z' fill='rgba(56,189,248,0.03)'/></svg>");
+    background-size: 100% 100%;
+    pointer-events: none; z-index: 0;
+}
+/* Cota altimétrica — fijada al margen izquierdo, fuera de las cards */
+.security::after {
+    content: "ALT · 3.128 m · CERRO TORRE · 49°18'S";
+    position: absolute;
+    left: 0.5rem; top: 50%;
+    transform: translateY(-50%);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.25em;
+    color: rgba(56,189,248,0.15);
+    text-transform: uppercase; white-space: nowrap;
+    pointer-events: none; z-index: 0;
+}
+
+.security > * {
+    max-width: 1280px; margin-left: auto; margin-right: auto;
+    padding-left: 5%; padding-right: 5%;
+}
+.security .section__head { margin-bottom: 3rem; }
+
+.proto-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+}
+
+.proto-card {
+    perspective: 1000px;
+    height: 190px;
+    background: transparent; border: none; border-radius: 0;
+    padding: 0; cursor: pointer;
+}
+.proto-card__inner {
+    position: relative; width: 100%; height: 100%;
+    transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+}
+.proto-card:hover .proto-card__inner { transform: rotateY(180deg); }
+
+.proto-card__front,
+.proto-card__back {
+    position: absolute; inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+
+/* Frente: centrado, compacto */
+.proto-card__front {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; gap: 0.85rem;
+    padding: 1.4rem 1.2rem;
+}
+
+/* Número decorativo — casi imperceptible */
+.proto-card__num {
+    position: absolute; bottom: 0.3rem; right: 0.7rem;
+    font-family: var(--font-mono); font-size: 4.5rem; font-weight: 700;
+    color: rgba(56,189,248,0.025); line-height: 1;
+    pointer-events: none; user-select: none;
+}
+
+/* Ícono SVG — círculo centrado */
+.proto-icon-wrap {
+    width: 54px; height: 54px;
+    border-radius: 50%;
+    background: rgba(56,189,248,0.07);
+    border: 1px solid rgba(56,189,248,0.18);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--sky);
+    transition: background 0.3s, border-color 0.3s, transform 0.3s;
+}
+.proto-icon-wrap svg { width: 22px; height: 22px; }
+.proto-card:hover .proto-icon-wrap {
+    background: rgba(56,189,248,0.14);
+    border-color: rgba(56,189,248,0.4);
+    transform: scale(1.08);
+}
+
+.proto-name {
+    font-family: var(--font-display); font-size: 0.82rem; font-weight: 700;
+    letter-spacing: 0.03em; text-transform: uppercase;
+    color: var(--neon); line-height: 1.35;
+    max-width: 85%;
+}
+.proto-desc { display: none; }
+
+/* Reverso */
+.proto-card__back {
+    transform: rotateY(180deg);
+    background: #0a1621;
+    border-color: var(--sky);
+    display: flex; flex-direction: column;
+    justify-content: center; gap: 0.8rem;
+    padding: 1.8rem;
+}
+.proto-card__back-label {
+    font-family: var(--font-mono); font-size: 0.58rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--sky); margin-bottom: 0.2rem;
+}
+.proto-card__back-text { font-size: 0.84rem; color: var(--muted); line-height: 1.65; }
+
+/* ── 9. GALLERY — dentro de la grilla normal ────────────────── */
+.gallery {
+    padding: 6rem 5%;
+    max-width: 1280px; margin: 0 auto;
+    background: transparent !important;
+}
+.gallery .section__head { margin-bottom: 2.5rem; }
+.masonry-gallery { padding: 0; }
+
+/* ── 10. TESTIMONIALS ───────────────────────────────────────── */
+.testimonials { 
+    padding: 7rem 5%; max-width: 1280px; margin: 0 auto; 
+    background: transparent !important;
+}
+
+.review-marquee {
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+.review-marquee__track {
+    display: flex; gap: 1.4rem;
+    width: max-content;
+    animation: marquee-scroll 40s linear infinite;
+}
+.review-marquee__track:hover { animation-play-state: paused; }
+@keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+.review-marquee .review-card {
+    flex: 0 0 320px; width: 320px; scroll-snap-align: none;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 2rem 1.8rem;
+    display: flex; flex-direction: column; gap: 1.1rem;
+    transition: border-color 0.25s, transform 0.25s;
+}
+.review-marquee .review-card:hover {
+    border-color: rgba(56,189,248,0.3);
+    transform: translateY(-3px);
+}
+.review-card__stars {
+    color: var(--sky); font-size: 0.75rem;
+    letter-spacing: 3px;
+}
+.review-card__text {
+    font-size: 0.9rem; line-height: 1.7;
+    color: var(--neon); font-style: italic;
+    flex: 1;
+}
+.review-card__footer {
+    display: flex; flex-direction: column; gap: 0.2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+}
+.review-card__name {
+    font-size: 0.82rem; font-weight: 700;
+    color: var(--neon); margin: 0;
+}
+.review-card__tag {
+    font-family: var(--font-mono); font-size: 0.65rem;
+    color: var(--sky); letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* ── 11. FOOTER — rediseño estilo referencia ─────────────────── */
+.footer {
+    background: #07111a;
+    border-top: 1px solid var(--line);
+    padding: 0;
+}
+.footer__body {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr 1fr 1.2fr;
+    gap: 3rem;
+    max-width: 1280px; margin: 0 auto;
+    padding: 4rem 5%;
+    border-bottom: 1px solid var(--line);
+}
+.footer__brand-col { display: flex; flex-direction: column; gap: 1.2rem; }
+.footer__logo {
+    font-family: var(--font-display); font-weight: 800;
+    font-size: 1.1rem; letter-spacing: 0.05em;
+    color: var(--neon); display: flex; align-items: center; gap: 0.5rem;
+}
+.footer__logo-icon { width: 22px; height: 16px; color: var(--pink); }
+.footer__logo-accent { color: var(--sky); }
+.footer__tagline { color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+.footer__social-row { display: flex; gap: 0.7rem; margin-top: 0.4rem; }
+.footer__social-btn {
+    width: 36px; height: 36px; border-radius: 50%;
+    border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--faint); transition: border-color 0.2s, color 0.2s;
+}
+.footer__social-btn:hover { border-color: var(--sky); color: var(--sky); }
+.footer__social-btn svg { width: 16px; height: 16px; }
+
+.footer__col h4 {
+    font-family: var(--font-mono); font-size: 0.68rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--neon); margin-bottom: 1.2rem; font-weight: 700;
+}
+.footer__col ul { display: flex; flex-direction: column; gap: 0.65rem; }
+.footer__col li { display: flex; align-items: center; gap: 0.7rem; }
+.footer__col a { color: var(--faint); font-size: 0.84rem; transition: color 0.2s; }
+.footer__col a:hover { color: var(--neon); }
+.footer__col--contact li { color: var(--faint); font-size: 0.84rem; }
+.footer__contact-icon {
+    width: 16px; height: 16px; flex-shrink: 0;
+    color: var(--sky); display: flex; align-items: center; justify-content: center;
+}
+.footer__contact-icon svg { width: 15px; height: 15px; }
+
+.footer__bottom {
+    max-width: 1280px; margin: 0 auto;
+    padding: 1.4rem 5%;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 0.5rem;
+}
+.footer__bottom p { color: var(--faint); font-size: 0.76rem; }
+.footer__bottom p:last-child { font-style: italic; color: var(--faint); }
+
+/* ── 12. PRECIO EN EXP CARDS ────────────────────────────────── */
+.exp-card__price {
+    margin: 0.8rem 0 1rem;
+    display: flex; align-items: baseline; gap: 0.3rem;
+}
+.exp-card__price-val {
+    font-family: var(--font-mono); font-size: 1.15rem; font-weight: 700;
+    color: var(--sky); letter-spacing: 0.04em;
+}
+.exp-card__price-label {
+    font-size: 0.72rem; color: var(--muted); letter-spacing: 0.06em;
+}
+
+/* ── 13. GALERÍA — overlay con info ─────────────────────────── */
+.mg__item { position: relative; overflow: hidden; }
+/* anular el ::after original que mostraba data-lugar siempre visible */
+.mg__item::after { display: none !important; }
+.mg__caption {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(5,10,15,0.92) 0%, rgba(5,10,15,0.5) 60%, transparent 100%);
+    padding: 1.8rem 1.2rem 1rem;
+    display: flex; flex-direction: column; gap: 0.2rem;
+    opacity: 0; transform: translateY(8px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.mg__item:hover .mg__caption { opacity: 1; transform: translateY(0); }
+.mg__caption-lugar {
+    font-family: var(--font-display); font-size: 0.9rem; font-weight: 700;
+    color: var(--neon); letter-spacing: 0.04em;
+}
+.mg__caption-meta { display: none; }
+.mg__caption-desc {
+    font-size: 0.78rem; color: var(--muted); line-height: 1.5;
+    margin-top: 0.25rem;
+}
+
+/* ── 14. DETALLE — precio en hero ───────────────────────────── */
+.det-stat--price { border-left: 1px solid rgba(56,189,248,0.3); }
+.det-stat__val--price {
+    color: var(--sky); font-size: 1.35rem;
+}
+
+/* ── 15. DETALLE — galería 3 fotos con captions ─────────────── */
+.det-img-break { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.6rem; }
+.det-img-break__fig {
+    position: relative; overflow: hidden; border-radius: var(--radius);
+    margin: 0;
+}
+.det-img-break__fig img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+.det-img-break__fig:hover img { transform: scale(1.04); }
+.det-img-break__cap {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 1.8rem 1rem 1rem;
+    background: linear-gradient(to top, rgba(5,10,15,0.92) 0%, rgba(5,10,15,0.5) 60%, transparent 100%);
+    display: flex; flex-direction: column; gap: 0.2rem;
+    opacity: 0; transform: translateY(8px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.det-img-break__fig:hover .det-img-break__cap { opacity: 1; transform: translateY(0); }
+.det-img-break__cap span:first-child {
+    font-family: var(--font-display); font-size: 0.9rem; font-weight: 700; color: var(--neon);
+}
+.det-img-break__cap span:nth-child(2) { display: none; }
+.det-img-break__desc {
+    font-size: 0.78rem; color: var(--muted); line-height: 1.5; margin-top: 0.25rem;
+}
+
+/* ── DETALLE: Ficha técnica full-width (proto-card style) ────── */
+.det-section--ficha {
+    max-width: none !important;
+    padding: 7rem 0 !important;
+    margin: 0 !important;
+}
+.det-section--ficha .det-ficha {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 5%;
+}
+.det-ficha__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+}
+.det-ficha__card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 2rem 1.8rem;
+    display: flex; flex-direction: column;
+    align-items: center; text-align: center; gap: 0.9rem;
+    position: relative; overflow: hidden;
+    transition: border-color 0.25s, transform 0.25s;
+}
+.det-ficha__card:hover { border-color: rgba(56,189,248,0.3); transform: translateY(-3px); }
+.det-ficha__icon-wrap {
+    width: 54px; height: 54px; border-radius: 50%;
+    background: rgba(56,189,248,0.07);
+    border: 1px solid rgba(56,189,248,0.18);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--sky); flex-shrink: 0;
+    transition: background 0.3s, border-color 0.3s;
+}
+.det-ficha__card:hover .det-ficha__icon-wrap {
+    background: rgba(56,189,248,0.13);
+    border-color: rgba(56,189,248,0.35);
+}
+.det-ficha__icon-wrap svg { width: 22px; height: 22px; }
+.det-ficha__num {
+    position: absolute; bottom: 0.3rem; right: 0.7rem;
+    font-family: var(--font-mono); font-size: 4.5rem; font-weight: 700;
+    color: rgba(56,189,248,0.025); line-height: 1; pointer-events: none;
+}
+.det-ficha__name {
+    font-size: 0.82rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--neon);
+}
+.det-ficha__desc { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
+.det-ficha__list {
+    list-style: none; text-align: left; width: 100%;
+    display: flex; flex-direction: column; gap: 0.5rem;
+}
+.det-ficha__list li {
+    font-size: 0.83rem; color: var(--muted); line-height: 1.5;
+    padding-left: 1rem; position: relative;
+}
+.det-ficha__list li::before {
+    content: '—'; position: absolute; left: 0;
+    color: var(--sky); font-size: 0.7rem;
+}
+.det-ficha__head { margin-bottom: 3rem; }
+
+/* ── DETALLE: Itinerario — layout dos columnas ────────────────── */
+.det-section--itinerary {
+    max-width: none !important;
+    padding: 7rem 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+}
+.det-section--itinerary .det-itinerary {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 5%;
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 5rem;
+    align-items: start;
+}
+.det-itinerary__left { padding-top: 0.5rem; }
+.det-itinerary__left .section__title { font-size: clamp(1.8rem, 3vw, 2.6rem); margin-top: 0.8rem; }
+.det-itinerary__card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    width: 100%;
+}
+.det-acc {
+    border-bottom: 1px solid var(--line);
+}
+.det-acc:last-child { border-bottom: none; }
+.det-acc__header {
+    display: flex; align-items: center; gap: 1.4rem;
+    padding: 1.4rem 1.8rem;
+    cursor: pointer; list-style: none;
+    user-select: none;
+    transition: background 0.2s;
+}
+.det-acc__header::-webkit-details-marker { display: none; }
+.det-acc__header::marker { display: none; }
+.det-acc__header:hover { background: rgba(56,189,248,0.04); }
+.det-acc__code {
+    font-family: var(--font-mono); font-size: 0.75rem;
+    color: var(--sky); letter-spacing: 0.12em;
+    font-weight: 700; flex-shrink: 0; min-width: 42px;
+}
+.det-acc__title {
+    font-family: var(--font-display); font-size: 1rem;
+    font-weight: 700; color: var(--neon); margin: 0; flex: 1;
+}
+.det-acc__btn {
+    font-size: 1.3rem; color: var(--sky); flex-shrink: 0;
+    transition: transform 0.25s;
+    line-height: 1;
+}
+.det-acc[open] .det-acc__btn { transform: rotate(45deg); }
+.det-acc__body {
+    padding: 0 1.8rem 1.4rem calc(1.8rem + 42px + 1.4rem);
+}
+.det-acc__desc { color: var(--muted); font-size: 0.88rem; line-height: 1.75; }
+
+@media (max-width: 1024px) {
+    .det-ficha__grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+    .det-acc__body { padding: 0 1.2rem 1.2rem 1.2rem; }
+    .det-acc__header { padding: 1.2rem; gap: 1rem; }
+}
+
+/* ── 16. DETALLE — urgencia en admisión ─────────────────────── */
+.det-admission__urgency {
+    margin: 1.4rem 0 1.6rem;
+    border: 1px solid rgba(56,189,248,0.25);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    background: rgba(56,189,248,0.05);
+    display: flex; flex-direction: column; gap: 0.7rem;
+}
+.det-admission__urgency-row {
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+}
+.det-admission__urgency-label {
+    font-size: 0.78rem; color: var(--muted); letter-spacing: 0.05em;
+}
+.det-admission__urgency-date {
+    font-family: var(--font-mono); font-size: 0.82rem; color: var(--neon);
+}
+.det-admission__urgency-price {
+    font-family: var(--font-mono); font-size: 1.1rem; color: var(--sky);
+}
+.det-admission__urgency-price span {
+    font-size: 0.72rem; color: var(--muted); font-weight: 400;
+}
+
+/* ── Reviews — transparente, el gradiente del body la sostiene ── */
+.reviews {
+    background: transparent !important;
+    position: relative;
+}
+/* Coordenadas de expedicionistas — margen derecho */
+.reviews::after {
+    content: "CAMPO BASE · PATAGONIA · 49°S · 73°W";
+    position: absolute;
+    right: 0.5rem; top: 50%;
+    transform: translateY(-50%);
+    writing-mode: vertical-rl;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.25em;
+    color: rgba(56,189,248,0.12);
+    text-transform: uppercase; white-space: nowrap;
+    pointer-events: none; z-index: 0;
+}
+
+/* ── 12. SCHOOL — semi-transparente, cordillera al fondo ───── */
+/* School: fondo full-width, card al mismo ancho que contenido de security */
+.school {
+    background: rgba(4, 10, 22, 0.60) !important;
+    position: relative;
+    max-width: none !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-top: 5rem !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box !important;
+}
+/* 1280px - 2*(5% de 1280) = 1152px — mismo ancho visual que las cards de seguridad */
+.school__inner {
+    max-width: 1152px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+/* Cota de Torres del Paine — margen izquierdo */
+.school::after {
+    content: "TORRES DEL PAINE · 51°03'S · 72°59'W · 2.884 m";
+    position: absolute;
+    left: 0.5rem; top: 50%;
+    transform: translateY(-50%);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.25em;
+    color: rgba(56,189,248,0.12);
+    text-transform: uppercase; white-space: nowrap;
+    pointer-events: none; z-index: 0;
+}
+/* Silueta de cumbre en school — fondo de la sección estrella */
+.school::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0; height: 260px;
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 260' preserveAspectRatio='none'><path d='M0,260 L0,180 L120,165 L200,175 L280,140 L340,155 L400,118 L450,135 L500,102 L540,120 L575,88 L605,108 L630,80 L655,100 L678,72 L700,92 L722,65 L744,85 L768,100 L800,112 L840,100 L880,112 L930,100 L980,112 L1040,100 L1100,112 L1160,100 L1220,112 L1280,100 L1340,112 L1390,105 L1440,115 L1440,260 Z' fill='rgba(56,189,248,0.06)'/><path d='M0,260 L0,205 L150,192 L240,202 L320,172 L380,186 L440,158 L490,172 L538,145 L568,160 L598,135 L625,150 L652,128 L676,144 L700,118 L724,138 L748,155 L780,165 L820,155 L860,165 L910,155 L960,165 L1010,155 L1065,165 L1120,155 L1180,165 L1245,155 L1310,165 L1375,158 L1440,165 L1440,260 Z' fill='rgba(56,189,248,0.035)'/></svg>");
+    background-size: 100% 100%;
+    pointer-events: none; z-index: 0;
+}
+.school > * { position: relative; z-index: 1; }
+.school__title { font-size: clamp(2.4rem, 4vw, 3.8rem); }
+.school__year { font-size: 4.2rem; }
+
+/* ── Team — semi-transparente, sin overflow:hidden para no cortar */
+.team {
+    background: rgba(4, 9, 18, 0.65) !important;
+    position: relative;
+}
+/* Silueta de montaña al fondo + texto de identidad */
+.team::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0; height: 220px;
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 220' preserveAspectRatio='none'><path d='M0,220 L0,160 L100,148 L180,158 L260,125 L320,138 L385,105 L435,120 L490,88 L530,105 L568,75 L598,92 L625,62 L650,80 L675,55 L700,74 L722,88 L755,100 L800,115 L850,105 L900,115 L960,105 L1020,115 L1080,105 L1140,115 L1200,108 L1260,118 L1320,110 L1380,120 L1440,115 L1440,220 Z' fill='rgba(56,189,248,0.055)'/><path d='M0,220 L0,178 L90,168 L165,176 L235,150 L285,162 L340,138 L385,150 L432,128 L465,142 L498,122 L525,136 L552,118 L578,132 L605,148 L640,158 L685,148 L730,158 L778,148 L828,158 L880,148 L935,158 L990,148 L1048,158 L1108,148 L1168,158 L1230,150 L1292,160 L1356,152 L1440,158 L1440,220 Z' fill='rgba(56,189,248,0.032)'/></svg>");
+    background-size: 100% 100%;
+    pointer-events: none; z-index: 0;
+}
+/* Identificador UIAGM — margen derecho */
+.team::after {
+    content: "UIAGM · GUÍAS CERTIFICADOS · PATAGONIA · 51°S";
+    position: absolute;
+    right: 0.5rem; top: 50%;
+    transform: translateY(-50%);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.25em;
+    color: rgba(56,189,248,0.13);
+    text-transform: uppercase; white-space: nowrap;
+    pointer-events: none; z-index: 0;
+}
+.team > * { position: relative; z-index: 1; }
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+    .stats-strip__inner { flex-wrap: wrap; gap: 0; }
+    .stat-item { flex: 0 0 50%; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 1.5rem; }
+    .stat-item:nth-child(even) { border-right: none; }
+    .stat-item:nth-child(3), .stat-item:nth-child(4) { border-bottom: none; }
+    .team__grid { grid-template-columns: repeat(2, 1fr); }
+    .proto-grid { grid-template-columns: repeat(2, 1fr); }
+    .review-marquee .review-card { flex: 0 0 280px; width: 280px; }
+    .footer__body { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+}
+@media (max-width: 640px) {
+    .section__title { font-size: 1.5rem; }
+    .hero__title { font-size: 2.5rem; }
+    .stats-strip { padding: 0; }
+    .stat-item { flex: 0 0 50%; padding: 1.5rem 1rem; }
+    .stat-item__num { font-size: 2rem; }
+    .photo-break { height: 38vh; }
+    .security { padding: 4rem 0; }
+    .proto-grid { grid-template-columns: 1fr; }
+    .proto-card { height: 190px; }
+    .review-marquee .review-card { flex: 0 0 260px; width: 260px; }
+    .footer__body { grid-template-columns: 1fr; gap: 2rem; }
+    .footer__bottom { flex-direction: column; align-items: flex-start; gap: 0.3rem; }
+}
+/* ══ KIT SECTION — Hotspots interactivos ═══════════════════════ */
+.kit-section {
+    padding: 6rem 0;
+    background: transparent;
+}
+.kit-section__inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 5%;
+}
+.kit-section__inner .section__title { margin-bottom: 2.5rem; }
+.kit-hotspot {
+    position: relative;
+    width: 100%;
+    line-height: 0;
+    overflow: hidden;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+}
+.kit-hotspot__img {
+    width: 100%;
+    height: 62vh;
+    min-height: 380px;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.75);
+    border-radius: var(--radius);
+}
+
+/* Punto interactivo */
+.kit-dot {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 2;
+}
+.kit-dot__ring {
+    display: block;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: rgba(56,189,248,0.15);
+    border: 1.5px solid rgba(56,189,248,0.6);
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    animation: kit-pulse 2.4s ease-in-out infinite;
+}
+.kit-dot__icon {
+    display: flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--sky);
+    color: #050a0f;
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.25s, background 0.25s;
+}
+.kit-dot:hover .kit-dot__icon,
+.kit-dot:focus .kit-dot__icon {
+    transform: rotate(45deg);
+    background: #fff;
+}
+
+/* Tooltip */
+.kit-dot__tooltip {
+    position: absolute;
+    bottom: calc(100% + 14px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(5,10,15,0.95);
+    border: 1px solid rgba(56,189,248,0.25);
+    border-radius: 10px;
+    padding: 0.85rem 1.1rem;
+    width: 180px;
+    text-align: left;
+    line-height: 1.5;
+    font-size: 0.78rem;
+    color: var(--muted);
+    white-space: normal;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(-50%) translateY(6px);
+    transition: opacity 0.2s, transform 0.2s;
+    z-index: 10;
+}
+.kit-dot__tooltip strong {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--sky);
+    margin-bottom: 0.3rem;
+}
+.kit-dot__tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%; left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: rgba(56,189,248,0.25);
+}
+.kit-dot__tooltip--left {
+    left: auto; right: calc(100% + 14px);
+    bottom: 50%;
+    transform: translateY(50%) translateX(0);
+}
+.kit-dot__tooltip--left::after {
+    top: 50%; left: 100%;
+    transform: translateY(-50%);
+    border-top-color: transparent;
+    border-left-color: rgba(56,189,248,0.25);
+}
+.kit-dot:hover .kit-dot__tooltip,
+.kit-dot:focus .kit-dot__tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+.kit-dot:hover .kit-dot__tooltip--left,
+.kit-dot:focus .kit-dot__tooltip--left {
+    transform: translateY(50%) translateX(0);
+}
+
+@keyframes kit-pulse {
+    0%, 100% { transform: translate(-50%,-50%) scale(1); opacity: 0.7; }
+    50%       { transform: translate(-50%,-50%) scale(1.4); opacity: 0; }
+}
+
+/* det-proto-grid: misma altura que proto-grid index */
+.det-proto-grid { grid-template-columns: repeat(3, 1fr) !important; }
+.det-proto-grid .proto-card { height: 190px; }
+
+@media (max-width: 1024px) {
+    .det-section--itinerary .det-itinerary { grid-template-columns: 1fr; gap: 2.5rem; }
+    .det-proto-grid { grid-template-columns: 1fr !important; }
+    .det-proto-grid .proto-card { height: auto; min-height: 190px; }
+}
